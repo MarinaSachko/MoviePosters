@@ -3,43 +3,105 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class FilmMenegerTest {
-    FilmManager film1 = new FilmManager("Бладшот");
-    FilmManager film2 = new FilmManager("Вперед");
-    FilmManager film3 = new FilmManager("ОтельБелград");
-    FilmManager film4 = new FilmManager("Джентельмены");
-    FilmManager film5 = new FilmManager("Человек-невидимка");
-    FilmManager film6 = new FilmManager("Тролли");
-    FilmManager film7 = new FilmManager("Номер один");
-
-
     @Test
-    public void test() {
+    public void testFilmManager() {
         FilmManager repo = new FilmManager();
-        repo.save(film1);
-        repo.save(film2);
-        repo.save(film3);
-        repo.save(film4);
-        repo.save(film5);
-        repo.save(film6);
-        repo.save(film7);
+        repo.save("Бладшот");
+        repo.save("Вперед");
+        repo.save("Отель Белград");
+        repo.save("Джентельмены");
 
-        FilmManager[] expected = {film1, film2, film3, film4, film5, film6, film7};
-        FilmManager[] actual = repo.findAll();
+
+        String[] expected = {"Бладшот", "Вперед", "Отель Белград", "Джентельмены"};
+        String[] actual = repo.findAll();
 
         Assertions.assertArrayEquals(expected, actual);
 
-        FilmManager[] expected1 = {film7, film6, film5, film4, film3};
-        FilmManager[] actual1 = repo.findLast();
-        Assertions.assertArrayEquals(expected1, actual1);
+    }
 
-        FilmManager[] expected2 = {film7, film6, film5};
-        FilmManager[] actual2 = repo.findLastLimit(3);
-        Assertions.assertArrayEquals(expected2, actual2);
+    @Test
+    public void testFilmManagerAddOne() {
+        FilmManager repo1 = new FilmManager();
+        repo1.save("Бладшот");
 
-        FilmManager[] expected3 = {film7, film6, film5, film4, film3, film2, film1};
-        FilmManager[] actual3 = repo.findLastLimit(13);
-        Assertions.assertArrayEquals(expected3, actual3);
+        String[] expected = {"Бладшот"};
+        String[] actual = repo1.findAll();
 
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void testFilmManagerAddNull() {
+        FilmManager repo1 = new FilmManager();
+        repo1.save("");
+
+        String[] expected = {null};
+        String[] actual = repo1.findAll();
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void testFindLast() {
+        FilmManager repo = new FilmManager(2);
+        repo.save("Бладшот");
+        repo.save("Вперед");
+        repo.save("Отель Белград");
+        repo.save("Джентельмены");
+
+        //
+
+        String[] expected = {"Джентельмены", "Отель Белград"};
+        String[] actual = repo.findLast();
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void testFindLastMoreLenght() {
+        FilmManager repo = new FilmManager(5);
+        repo.save("Бладшот");
+        repo.save("Вперед");
+        repo.save("Отель Белград");
+        repo.save("Джентельмены");
+
+        //
+
+        String[] expected = {"Джентельмены", "Отель Белград", "Вперед", "Бладшот"};
+        String[] actual = repo.findLast();
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void testFindLastWithoutParameters() {
+        FilmManager repo = new FilmManager();
+        repo.save("Бладшот");
+        repo.save("Вперед");
+        repo.save("Отель Белград");
+        repo.save("Джентельмены");
+
+        //
+
+        String[] expected = {"Джентельмены", "Отель Белград", "Вперед"};
+        String[] actual = repo.findLast();
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void testFindLastWithoutParametersLessLimit() {
+        FilmManager repo = new FilmManager();
+
+        repo.save("Отель Белград");
+        repo.save("Джентельмены");
+
+        //
+
+        String[] expected = {"Джентельмены", "Отель Белград"};
+        String[] actual = repo.findLast();
+
+        Assertions.assertArrayEquals(expected, actual);
     }
 
 }
